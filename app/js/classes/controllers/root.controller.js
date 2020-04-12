@@ -89,6 +89,14 @@ class RootController {
 			} else {
 				this.config.toggleBroadcast();
 		 		this.renderBroadcast();
+		 		const profile = this.profiles.getCurrentProfile();
+		 		const theme = this.themes.getThemes()[profile.theme];
+		 		var title = profile.name;
+
+		 		if(theme.styles && theme.styles.length !== 0) {
+		 			title += " " + theme.styles[profile.themeStyle].name;
+		 		}
+		 		this.electron.window.setTitle(title);
 		 	}
 		}
 	}
