@@ -40,7 +40,8 @@ class RootController {
 			toolbar:new ToolbarController(this)
 		};
 
-		this.electron.window.setTitle("Open Joystick Display - ESC to Toggle Broadcast Mode");
+		this.defaultTitle = "Open Joystick Display - ESC to Toggle Broadcast Mode";
+		this.electron.window.setTitle(this.defaultTitle);
 		this.electron.window.setMenu(null);
 		this.electron.window.setBounds(this.config.getBounds());
 
@@ -88,17 +89,7 @@ class RootController {
 				this.controllers.toolbar.onAbout();
 			} else {
 				this.config.toggleBroadcast();
-		 		this.renderBroadcast();
-		 		const profile = this.profiles.getCurrentProfile();
-		 		const theme = this.themes.getThemes()[profile.theme];
-		 		var title = profile.name;
-
-		 		if(theme.styles && theme.styles.length !== 0) {
-		 			title += " " + theme.styles[profile.themeStyle].name;
-		 		}
-
-		 		title += " | Player: " + (profile.player + 1);
-		 		this.electron.window.setTitle(title);
+		 		this.renderBroadcast();		 		
 		 	}
 		}
 	}
@@ -106,6 +97,8 @@ class RootController {
 	renderBroadcast() {
 		const broadcast = this.config.getBroadcast();
 		const bounds = remote.getCurrentWindow().getBounds();
+		var title = this.defaultTitle;
+ 		
 		if (broadcast) {
 			$("*[ojd-broadcast]").addClass('ojd-broadcast-mode');
 			remote.getCurrentWindow().setBounds(this.profiles.getCurrentProfileBounds());
@@ -115,6 +108,16 @@ class RootController {
 			if (this.profiles.getCurrentProfileAlwaysOnTop()) {
 				remote.getCurrentWindow().setAlwaysOnTop(true);
 			}
+
+			const profile = this.profiles.getCurrentProfile();
+	 		const theme = this.themes.getThemes()[profile.theme];
+	 		title += profile.name;
+
+	 		if(theme.styles && theme.styles.length !== 0) {
+	 			title += " " + theme.styles[profile.themeStyle].name;
+	 		}
+
+	 		title += " | Player: " + (profile.player + 1);
 		} else {
 			$("*[ojd-broadcast]").removeClass('ojd-broadcast-mode');
 			remote.getCurrentWindow().setBounds(this.config.getBounds());	
@@ -122,6 +125,8 @@ class RootController {
 			remote.getCurrentWindow().setAlwaysOnTop(false);
 			this.reloadProfile();
 		}
+
+		this.electron.window.setTitle(title);
 	}
 
 	openDirectoryDialog() {
