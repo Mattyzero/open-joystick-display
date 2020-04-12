@@ -96,6 +96,8 @@ class RootController {
 		 		if(theme.styles && theme.styles.length !== 0) {
 		 			title += " " + theme.styles[profile.themeStyle].name;
 		 		}
+
+		 		title += " | Player: " + (profile.player + 1);
 		 		this.electron.window.setTitle(title);
 		 	}
 		}
