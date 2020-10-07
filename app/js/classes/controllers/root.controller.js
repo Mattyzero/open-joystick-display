@@ -117,7 +117,7 @@ class RootController {
 	 			title += " " + theme.styles[profile.themeStyle].name;
 	 		}
 
-	 		title += " | Player: " + (profile.player + 1);
+	 		//title += " | Player: " + (profile.player + 1);
 		} else {
 			$("*[ojd-broadcast]").removeClass('ojd-broadcast-mode');
 			remote.getCurrentWindow().setBounds(this.config.getBounds());	
